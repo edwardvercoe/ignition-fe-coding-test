@@ -12,8 +12,8 @@ const BumpValue = ({ value, onChange }) => {
   const [startValue] = useState(value)
 
   const handleBumpValue = () => {
-    setClickCount(clickCount)
-    onChange(value)
+    setClickCount(clickCount + 1)
+    onChange({ value: clickCount + 1 })
   }
 
   // Leave return value untouched
@@ -29,7 +29,7 @@ const BumpValue = ({ value, onChange }) => {
 
 // TODO: Fix this component so that it renders a result
 const FixMe = () => {
-  const [value, setValue] = useState()
+  const [value, setValue] = useState(0)
 
   // Leave the next 5 lines as they are
   const ready = Number.isInteger(value)
