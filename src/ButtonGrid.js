@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Button, Grid, GridItem } from "@chakra-ui/react"
 
 // NOTE: contents of this component are just an example
@@ -10,48 +10,55 @@ const ButtonGrid = () => {
     "green",
     "green",
     "green",
-    "red",
+    "green",
     "green",
     "green",
     "green",
     "green"
   ])
 
-  const handleClick = (value) => {
-    console.log(value)
+  const setRandomButtonRed = () => {
+    let random = Math.floor(Math.random() * 9)
+    const greenAvailable = colors.find((color) => color === "green")
+    if (!greenAvailable) return
+    while (colors[random] !== "green") {
+      random = Math.floor(Math.random() * 9)
+    }
+    const currColors = [...colors]
+    currColors[random] = "red"
+    setColors(currColors)
   }
 
+  const setButtonRed = (index) => {
+    const currColors = [...colors]
+    currColors[index] = "red"
+    setColors(currColors)
+  }
+
+  useEffect(() => {
+    setRandomButtonRed()
+  }, [])
+
+  const handleClick = (color, index) => {
+    console.log(color, index)
+    if (color === "red") {
+      setRandomButtonRed()
+    } else {
+      setButtonRed(index)
+    }
+  }
+
+  const buttonGrid = colors.map((color, index) => (
+    <GridItem key={`${color}_${index}`}>
+      {console.log("col", color)}
+      <Button onClick={() => handleClick(color, index)} colorScheme={color}>
+        {index + 1}
+      </Button>
+    </GridItem>
+  ))
   return (
     <Grid templateColumns="repeat(3, 1fr)" gap={2}>
-      <GridItem>
-        <Button onClick={handleClick} colorScheme={colors[0]}>
-          1
-        </Button>
-      </GridItem>
-      <GridItem>
-        <Button colorScheme={colors[1]}>2</Button>
-      </GridItem>
-      <GridItem>
-        <Button colorScheme={colors[2]}>3</Button>
-      </GridItem>
-      <GridItem>
-        <Button colorScheme={colors[3]}>4</Button>
-      </GridItem>
-      <GridItem>
-        <Button colorScheme={colors[4]}>5</Button>
-      </GridItem>
-      <GridItem>
-        <Button colorScheme={colors[5]}>6</Button>
-      </GridItem>
-      <GridItem>
-        <Button colorScheme={colors[6]}>7</Button>
-      </GridItem>
-      <GridItem>
-        <Button colorScheme={colors[7]}>8</Button>
-      </GridItem>
-      <GridItem>
-        <Button colorScheme={colors[8]}>9</Button>
-      </GridItem>
+      {buttonGrid}
     </Grid>
   )
 }
